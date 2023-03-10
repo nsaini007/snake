@@ -1,0 +1,46 @@
+<h1>Game#index</h1>
+<p>Find me in app/views/game/index.html.erb</p>
+<p>Welcome, <%= current_user.email %>!</p>
+<p>Session ID: <%= session[:session_id] %></p>
+<%= link_to "Logout", destroy_user_session_path, method: :delete %>
+
+<h1>Dice Game</h1>
+
+<div id="players">
+
+</div>
+
+
+<div id="player1">
+    <h2 id="name" ><%= current_user.email %></h2>
+    <p>Current Value: <span id="player1-value"></span></p>
+    <button id="dice__button">Roll Dice</button>
+    <%# <button onclick="gameChannel.roll">Roll Dice</button> %>
+</div>
+
+<h2>Connected users:</h2>
+
+<h1>Authenticated Users</h1>
+
+<ul>
+</ul>
+
+<%= javascript_pack_tag 'application' %>
+<script>
+  App.users = App.cable.subscriptions.create("UsersChannel", {
+    received: function (data) {
+        var users = data.users;
+        var listItems = "";
+
+        for (var i = 0; i < users.length; i++) {
+            listItems += "<li>" + users[i].email + "</li>";
+        }
+
+        $("ul").html(listItems);
+    }
+});
+
+</script>
+
+
+<%= action_cable_meta_tag %>
